@@ -193,6 +193,8 @@ Plug 'morhetz/gruvbox'
 " space-vim-dark
 " 主题space-vim-dark
 Plug 'liuchengxu/space-vim-dark'
+" solarized
+Plug 'altercation/vim-colors-solarized'
 
 " nav
 " nerdtree nerdtreetabs

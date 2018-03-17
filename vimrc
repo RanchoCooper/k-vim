@@ -716,10 +716,11 @@ set t_Co=256
 " colorscheme kolor
 " colorscheme lucius
 " colorscheme iceberg
-colorscheme tender
+" colorscheme tender
 " colorscheme gruvbox
 " colorscheme Apprentice
 " colorscheme space-vim-dark
+colorscheme solarized
 
 " 设置标记一列的背景颜色和数字一行颜色一致
 hi! link SignColumn   LineNr
