@@ -17,7 +17,6 @@
 "       -> Theme Settings  主题设置
 "
 "       -> 插件配置和具体设置在vimrc.bundles中
-" Note: Don't put anything in your .vimrc you don't understand!
 "==========================================
 
 "==========================================
@@ -95,6 +94,7 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,.svn
 set cursorcolumn
 " 突出显示当前行
 set cursorline
+set colorcolumn=80
 
 
 " 设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制, 不需要可以去掉
@@ -163,7 +163,6 @@ set showmatch
 " How many tenths of a second to blink when matching brackets
 set matchtime=2
 
-
 " 设置文内智能搜索提示
 " 高亮search命中的文本
 set hlsearch
@@ -200,8 +199,9 @@ endfun
 
 " 缩进配置
 " Smart indent
-set smartindent
-" 打开自动缩进
+"set smartindent   " Smart indent
+"set autoindent    " 打开自动缩进
+set cindent
 " never add copyindent, case error   " copy the previous indentation on autoindenting
 set autoindent
 
@@ -218,6 +218,38 @@ set smarttab
 set expandtab
 " 缩进时，取整 use multiple of shiftwidth when indenting with '<' and '>'
 set shiftround
+
+function! TAB(size)
+  " 设置Tab键的宽度        [等同的空格个数]
+  execute "set tabstop=".a:size
+  " 每一次缩进size个空格数
+  execute "set shiftwidth=".a:size
+  " 按退格键时可以一次删掉 size 个空格
+  execute "set softtabstop=".a:size
+endfunc
+
+autocmd FileType * :call TAB(2)                        " default Tabsize
+autocmd FileType py,python :call TAB(4)                " python Tabsize
+autocmd FileType ruby :call TAB(2)                     " ruby Tabsize
+autocmd FileType vim :call TAB(2)                      " vimrc Tabsize
+autocmd FileType html :call TAB(2)                     " html Tabsize
+autocmd FileType javascript,typescript :call TAB(2)    " typescript javascript Tabsize
+autocmd FileType js,ts,cs,coffee,jsx :call TAB(2)      " typescript javascript coffeescript Tabsize
+autocmd FileType c,h :call TAB(2)                      " c Tabsize
+autocmd FileType cpp,hpp,cc,cxx :call TAB(2)           " cpp Tabsize
+autocmd FileType java :call TAB(2)                     " java Tabsize
+
+" 使用F7切换是否使用空格代替tab(或tab代替空格)
+function! TabToggle()
+  if(&expandtab == 1)
+    set noexpandtab
+    retab!
+  else
+    set expandtab
+    retab
+  endif
+endfunc
+nnoremap <F7> :call TabToggle()<CR>
 
 " A buffer becomes hidden when it is abandoned
 set hidden
@@ -293,7 +325,6 @@ set wildignore=*.o,*~,*.pyc,*.class
 
 " 离开插入模式后自动关闭预览窗口
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
 " 回车即选中当前项
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
 
@@ -428,8 +459,8 @@ cnoremap <C-e> <End>
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
 " 进入搜索Use sane regexes"
-nnoremap / /\v
-vnoremap / /\v
+" nnoremap / /\v
+" vnoremap / /\v
 
 " Keep search pattern at the center of the screen.
 nnoremap <silent> n nzz
@@ -501,6 +532,9 @@ autocmd TabLeave * let g:last_active_tab = tabpagenr()
 nnoremap <C-t>     :tabnew<CR>
 inoremap <C-t>     <Esc>:tabnew<CR>
 
+" 关闭buffer和window
+nnoremap <Leader>bd :bd<CR>
+
 
 " => 选中及操作改键
 
@@ -519,15 +553,6 @@ vnoremap <leader>y "+y
 " vnoremap <silent> p p`]
 " nnoremap <silent> p p`]
 
-" select all
-map <Leader>sa ggVG
-
-" 选中并高亮最后一次插入的内容
-nnoremap gv `[v`]
-
-" select block
-nnoremap <leader>v V`}
-
 " w!! to sudo & write a file
 cmap w!! w !sudo tee >/dev/null %
 
@@ -541,41 +566,36 @@ nnoremap <C-y> 2<C-y>
 
 " Jump to start and end of line using the home row keys
 " 增强tab操作, 导致这个会有问题, 考虑换键
-"nmap t o<ESC>k
-"nmap T O<ESC>j
+" nmap t o<ESC>k
+" nmap T O<ESC>j
 
-" Quickly close the current window
-nnoremap <leader>q :q<CR>
+" Quickly close the all window
+nnoremap <leader>q :qa<CR>
 
 " Quickly save the current file
-nnoremap <leader>w :w<CR>
+nnoremap <leader>w :wa<CR>
 
 " 交换 ' `, 使得可以快速使用'跳到marked位置
 nnoremap ' `
 nnoremap ` '
 
-" remap U to <C-r> for easier redo
-nnoremap U <C-r>
-
 " Quickly edit/reload the vimrc file
-" nmap <silent> <leader>ev :e $MYVIMRC<CR>
-" nmap <silent> <leader>sv :so $MYVIMRC<CR>
-" edit vimrc/zshrc and load vimrc bindings
-nnoremap <leader>ev :vsp $MYVIMRC<CR>
-nnoremap <leader>ez :vsp ~/.zshrc<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
+
+" split line 快速分割一行
+nnoremap S :keeppatterns substitute/\s*\%#\s*/\r/e <bar> normal! ==<CR>
 
 "==========================================
 " FileType Settings  文件类型设置
 "==========================================
 
 " 具体编辑文件类型的一般设置，比如不要 tab 等
-autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
-autocmd FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd FileType python :call TAB(4)
+autocmd FileType ruby,javascript,html,css,xml,go :call TAB(2)
+autocmd FileType python,ruby,javascript,html,css,xml,go set expandtab ai
 autocmd BufRead,BufNewFile *.md,*.mkd,*.markdown set filetype=markdown.mkd
 autocmd BufRead,BufNewFile *.part set filetype=html
-autocmd BufRead,BufNewFile *.vue setlocal filetype=vue.html.javascript tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-
 " disable showmatch when use > in php
 au BufWinEnter *.php set mps-=<:>
 
@@ -592,18 +612,28 @@ autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,pe
 
 
 " 定义函数AutoSetFileHead，自动插入文件头
-autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
+autocmd BufNewFile *.sh,*.py,*.rb,*.qml exec ":call AutoSetFileHead()"
 function! AutoSetFileHead()
-    "如果文件类型为.sh文件
+    " 如果文件类型为.sh文件
     if &filetype == 'sh'
         call setline(1, "\#!/bin/bash")
     endif
 
-    "如果文件类型为python
+    " 如果文件类型为python
     if &filetype == 'python'
-        " call setline(1, "\#!/usr/bin/env python")
-        " call append(1, "\# encoding: utf-8")
-        call setline(1, "\# -*- coding: utf-8 -*-")
+        call setline(1, "\#!/usr/bin/env python")
+        call append(1, "\# encoding: utf-8")
+    endif
+
+    " 如果文件类型为ruby
+    if &filetype == 'ruby'
+      call setline(1, "\#!/usr/bin/env ruby")
+      call append(1, "\#encoding: utf-8")
+    endif
+
+    " 如果文件类新为qml
+    if &filetype ==  'qml'
+      call setline(1, "import QtQuick 1.0")
     endif
 
     normal G
@@ -616,7 +646,7 @@ endfunc
 if has("autocmd")
   " Highlight TODO, FIXME, NOTE, etc.
   if v:version > 701
-    autocmd Syntax * call matchadd('Todo',  '\W\zs\(TODO\|FIXME\|CHANGED\|DONE\|XXX\|BUG\|HACK\)')
+    autocmd Syntax * call matchadd('Todo',  '\W\zs\(TODO\|FIXME\|CHANGED\|DONE\|XXX\|BUG\|HACK\|PENDING\)')
     autocmd Syntax * call matchadd('Debug', '\W\zs\(NOTE\|INFO\|IDEA\|NOTICE\)')
   endif
 endif
@@ -625,9 +655,28 @@ endif
 " TEMP 设置, 尚未确定要不要
 "==========================================
 
-" beta
-" https://dougblack.io/words/a-good-vimrc.html
-set lazyredraw          " redraw only when we need to.
+" tmux
+" function! WrapForTmux(s)
+"   if !exists('$TMUX')
+"     return a:s
+"   endif
+"
+"   let tmux_start = "\<Esc>Ptmux;"
+"   let tmux_end = "\<Esc>\\"
+"
+"   return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
+" endfunction
+"
+" let &t_SI .= WrapForTmux("\<Esc>[?2004h")
+" let &t_EI .= WrapForTmux("\<Esc>[?2004l")
+
+" allows cursor change in tmux mode
+" let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+" let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+" if exists('$TMUX')
+    " let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    " let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+" endif
 
 
 "==========================================
@@ -656,10 +705,21 @@ endif
 " theme主题
 set background=dark
 set t_Co=256
-
-colorscheme solarized
+" colorscheme onedark
 " colorscheme molokai
-
+" colorscheme Tomorrow-Night
+" colorscheme Tomorrow-Night-Eighties
+" colorscheme Tomorrow-Night-Bright
+" colorscheme monokai
+" colorscheme hybrid
+" colorscheme jellybeans
+" colorscheme kolor
+" colorscheme lucius
+" colorscheme iceberg
+colorscheme tender
+" colorscheme gruvbox
+" colorscheme Apprentice
+" colorscheme space-vim-dark
 
 " 设置标记一列的背景颜色和数字一行颜色一致
 hi! link SignColumn   LineNr
@@ -675,3 +735,4 @@ highlight clear SpellRare
 highlight SpellRare term=underline cterm=underline
 highlight clear SpellLocal
 highlight SpellLocal term=underline cterm=underline
+
