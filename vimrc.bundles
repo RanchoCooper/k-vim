@@ -458,11 +458,11 @@ let flake8_ignore_args = '--ignore=E225,W503,H405,H306,H301,H201,H404,F812 --max
 
 " validator.vim {{{
     " checker
-    " let g:validator_error_symbol = '>>'
-    " let g:validator_warning_symbol = '>'
-    " let g:validator_style_error_symbol = '>>'
-    " let g:validator_style_warning_symbol = '>'
-    " let g:validator_auto_open_quickfix = 1
+    let g:validator_error_symbol = '>>'
+    let g:validator_warning_symbol = '>'
+    let g:validator_style_error_symbol = '>>'
+    let g:validator_style_warning_symbol = '>'
+    let g:validator_auto_open_quickfix = 1
     function! AirlineInit()
       let g:validator_error_msg_format = "[● %d/%d errors]"
       let g:validator_warning_msg_format = "[● %d/%d warnings]"
@@ -517,12 +517,13 @@ if has_key(g:plugs, 'ale')
 
     " let g:validator_c_checker = ['clang-tidy']
 
-    " let g:validator_filetype_map = {"py.j2": "python"}
+    let g:validator_filetype_map = {"py.j2": "python"}
     " 使用littlekey修改版validator.vim
     " g:validator_ignore 会检查文件类型与文件是否包含关键字
     let g:validator_ignore = ['java', 'ControlP']
 
     let g:validator_permament_sign = 1
+    " let g:validator_debug = 1
 " }}}
 
 
@@ -991,3 +992,12 @@ map ns<Space> :.,$s/
 " }}}
 
 "------------------------------------------- end of configs --------------------------------------------
+"------------------------------------------ customer configs -------------------------------------------
+" Plug 'nvie/vim-flake8'
+" vim-flake8 {{{
+    " let g:flake8_quickfix = 1
+    " let g:flake8_show_in_gutter = 1
+    " let g:flake8_quickfix_location="topright"
+    " let g:flake8_quickfix_height = 7
+" }}}
+Plug 'RanchoCooper/plaintasks.vim'
