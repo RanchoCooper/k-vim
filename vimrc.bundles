@@ -462,7 +462,7 @@ let flake8_ignore_args = '--ignore=E225,W503,H405,H306,H301,H201,H404,F812 --max
     let g:validator_warning_symbol = '>'
     let g:validator_style_error_symbol = '>>'
     let g:validator_style_warning_symbol = '>'
-    let g:validator_auto_open_quickfix = 1
+    " let g:validator_auto_open_quickfix = 1
     function! AirlineInit()
       let g:validator_error_msg_format = "[● %d/%d errors]"
       let g:validator_warning_msg_format = "[● %d/%d warnings]"
@@ -1000,4 +1000,23 @@ map ns<Space> :.,$s/
     " let g:flake8_quickfix_location="topright"
     " let g:flake8_quickfix_height = 7
 " }}}
+
 Plug 'RanchoCooper/plaintasks.vim'
+
+" nerdtree-git-plugin {{{
+    " let g:NERDTreeShowIgnoredStatus = 1
+    let g:NERDTreeDirArrowExpandable = '▸'
+    let g:NERDTreeDirArrowCollapsible = '▾'
+    let g:NERDTreeIndicatorMapCustom = {
+        \ "Modified"  : "✹",
+        \ "Staged"    : "✚",
+        \ "Untracked" : "✭",
+        \ "Renamed"   : "➜",
+        \ "Unmerged"  : "═",
+        \ "Deleted"   : "✖",
+        \ "Dirty"     : "✗",
+        \ "Clean"     : "✔︎",
+        \ 'Ignored'   : '☒',
+        \ "Unknown"   : "?"
+        \ }
+" }}}
