@@ -462,7 +462,7 @@ let flake8_ignore_args = '--ignore=E225,W503,H405,H306,H301,H201,H404,F812 --max
     let g:validator_warning_symbol = '>'
     let g:validator_style_error_symbol = '>>'
     let g:validator_style_warning_symbol = '>'
-    " let g:validator_auto_open_quickfix = 1
+    let g:validator_auto_open_quickfix = 0
     function! AirlineInit()
       let g:validator_error_msg_format = "[● %d/%d errors]"
       let g:validator_warning_msg_format = "[● %d/%d warnings]"
@@ -1001,8 +1001,6 @@ map ns<Space> :.,$s/
     " let g:flake8_quickfix_height = 7
 " }}}
 
-Plug 'RanchoCooper/plaintasks.vim'
-
 " nerdtree-git-plugin {{{
     " let g:NERDTreeShowIgnoredStatus = 1
     let g:NERDTreeDirArrowExpandable = '▸'
@@ -1020,3 +1018,12 @@ Plug 'RanchoCooper/plaintasks.vim'
         \ "Unknown"   : "?"
         \ }
 " }}}
+" vim-multiple-cursors {{{
+    let g:multi_cursor_start_key='<C-S>'
+    let g:multi_cursor_start_word_key='<C-W>'
+    let g:multi_cursor_next_key='<C-J>'
+    let g:multi_cursor_prev_key='<C-K>'
+    let g:multi_cursor_skip_key='<C-X>'
+    let g:multi_cursor_quit_key='<Esc>'
+"}}}
+Plug 'RanchoCooper/plaintasks.vim'
