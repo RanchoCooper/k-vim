@@ -54,7 +54,7 @@ Plug 'littlekey/validator.vim'
 " Group dependencies, vim-snippets depends on ultisnips
 " 代码片段快速插入 (snippets中,是代码片段资源,需要学习)
 " Snippets are separated from the engine. Add this if you want them:
-" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'Sirver/ultisnips' | Plug 'honza/vim-snippets'
 
 " auto complete
 " 代码自动补全
@@ -1027,3 +1027,11 @@ map ns<Space> :.,$s/
     let g:multi_cursor_quit_key='<Esc>'
 "}}}
 Plug 'RanchoCooper/plaintasks.vim'
+autocmd BufNewFile,BufReadPost *.TODO,TODO,*.todo,*.todolist,*.taskpaper,*.tasks,*.md set filetype=plaintasks
+
+" ultisnips {{{
+    let g:UltiSnipsExpandTrigger="<tab>"
+    let g:UltiSnipsJumpForwardTrigger="<c-b>"
+    let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+    let g:UltiSnipsEditSplit="vertical"
+" }}}
