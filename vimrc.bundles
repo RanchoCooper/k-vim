@@ -17,7 +17,7 @@ filetype off " required! turn off
 " inspired by spf13, 自定义需要的插件集合
 if !exists('g:bundle_groups')
     " let g:bundle_groups=['python', 'javascript', 'markdown', 'html', 'css', 'tmux', 'beta', 'qml', 'json', 'protobuf', 'nginx', 'golang', 'ruby', 'less']
-    let g:bundle_groups=['python', 'javascript', 'markdown', 'html', 'css', 'tmux', 'json', 'protobuf', 'nginx', 'shell', 'java']
+    let g:bundle_groups=['python', 'javascript', 'markdown', 'html', 'css', 'tmux', 'json', 'protobuf', 'nginx', 'shell', 'java', 'golang']
 endif
 
 " ----------------------------------------------------------------------------
@@ -59,7 +59,13 @@ Plug 'Sirver/ultisnips' | Plug 'honza/vim-snippets'
 " auto complete
 " 代码自动补全
 " completor for vim8
-Plug 'maralla/completor.vim', {'do': 'make js'}
+" Plug 'maralla/completor.vim', {'do': 'make js'}
+"
+"
+" completor.vim 目前有问题不可使用, 暂用YCM代替
+let YCM_COMPILE_COMMAND = './install.py --clang-completer --go-completer --java-completer --system-libclang'
+Plug 'Valloric/YouCompleteMe', { 'frozen': 1, 'do': YCM_COMPILE_COMMAND, 'for': ['python', 'c', 'c++', 'java'] }
+
 " 自动补全单引号，双引号等
 Plug 'Raimondi/delimitMate'
 " 自动补全html/xml标签
@@ -92,7 +98,7 @@ Plug 'Lokaltog/vim-easymotion'
 
 " 更高效的行内移动, f/F/t/T, 才触发
 " quickscope
-Plug 'unblevable/quick-scope'
+" Plug 'unblevable/quick-scope'
 
 Plug 'vim-scripts/matchit.zip'
 " signature
@@ -137,7 +143,7 @@ Plug 'mhinz/vim-grepper'
 " Plug 'thinca/vim-quickrun'
 
 " eunuch
-Plug 'tpope/vim-eunuch'
+" Plug 'tpope/vim-eunuch'
 
 " git
 " fugitive
@@ -206,7 +212,7 @@ Plug 'vim-ctrlspace/vim-ctrlspace'
 " tagbar
 Plug 'majutsushi/tagbar', { 'for': ['python', 'go'] }
 " window swap
-Plug 'wesQ3/vim-windowswap'
+" Plug 'wesQ3/vim-windowswap'
 " buffer operation improve
 Plug 'qpkorr/vim-bufkill'
 
@@ -354,6 +360,7 @@ if count(g:bundle_groups, 'java')
 
   let g:JavaComplete_ImportOrder = ['java.', 'javax.', 'com.', 'org.', 'net.']
   let g:JavaComplete_RegularClasses = ['java.lang.String', 'java.lang.Object', 'java.util.List']
+  let g:javaComplete_JavaCompiler = "/usr/bin/javac"
 
   let g:completor_java_omni_trigger = '\.'
 endif
@@ -372,6 +379,11 @@ endif
 
 
 " Add plugins to &runtimepath
+Plug 'RanchoCooper/plaintasks.vim'
+Plug 'mikelue/vim-maven-plugin'
+Plug 'scrooloose/vim-slumlord'
+Plug 'aklt/plantuml-syntax'
+Plug 'vim-scripts/DrawIt'
 call plug#end()
 
 
@@ -434,7 +446,7 @@ if has_key(g:plugs, 'syntastic')
         lfirst
     endtry
 " falke8 ignore args
-let flake8_ignore_args = '--ignore=E225,W503,H405,H306,H301,H201,H404,F812 --max-line-length=79'
+let flake8_ignore_args = '--ignore=E225,W503,H405,H306,H301,H201,H404,F812 --max-line-length=90'
 
 " vim-session | vim-misc {{{
     let g:session_lock_enabled=0
@@ -451,9 +463,9 @@ let flake8_ignore_args = '--ignore=E225,W503,H405,H306,H301,H201,H404,F812 --max
     set sessionoptions-=buffers
     set sessionoptions-=options
 
-    nnoremap <Leader>ss :SaveSession<CR>
-    nnoremap <Leader>os :OpenSession<CR>
-    nnoremap <Leader>ds :DeleteSession<CR>
+    nnoremap <Leader>sss :SaveSession<CR>
+    nnoremap <Leader>oss :OpenSession<CR>
+    nnoremap <Leader>dss :DeleteSession<CR>
 " }}}
 
 " validator.vim {{{
@@ -572,6 +584,12 @@ if has_key(g:plugs, 'ale')
     let g:completor_auto_trigger = 1
 " }}}
 
+" YouCompleteMe {{{
+    let g:ycm_python_binary_path = 'python'
+    let g:ycm_key_list_select_completion = ['<C-P>', '<C-N>']
+    let g:ycm_key_list_stop_completion = ['<CR>']
+" }}}
+
 " MatchTagAlways {{{
     let g:mta_use_matchparen_group = 1
     let g:mta_filetypes = {
@@ -638,7 +656,7 @@ if has_key(g:plugs, 'ale')
     " let g:qs_first_occurrence_highlight_color = '#afff5f' " gui vim
     let g:qs_first_occurrence_highlight_color = 155       " terminal vim
     " let g:qs_second_occurrence_highlight_color = '#5fffff'  " gui vim
-    let g:qs_second_occurrence_highlight_color = 81         " terminal vim
+    " let g:qs_second_occurrence_highlight_color = 81         " terminal vim
 " }}}
 
 " ################### 快速选中 ###################
@@ -1026,7 +1044,6 @@ map ns<Space> :.,$s/
     let g:multi_cursor_skip_key='<C-X>'
     let g:multi_cursor_quit_key='<Esc>'
 "}}}
-Plug 'RanchoCooper/plaintasks.vim'
 autocmd BufNewFile,BufReadPost *.TODO,TODO,*.todo,*.todolist,*.taskpaper,*.tasks,*.md set filetype=plaintasks
 
 " ultisnips {{{
@@ -1035,3 +1052,11 @@ autocmd BufNewFile,BufReadPost *.TODO,TODO,*.todo,*.todolist,*.taskpaper,*.tasks
     let g:UltiSnipsJumpBackwardTrigger="<c-z>"
     let g:UltiSnipsEditSplit="vertical"
 " }}}
+" Plug 'bling/vim-bufferline'
+
+" wesQ3/vim-windowswap {{{
+    let g:windowswap_map_keys = 0 "prevent default bindings
+    nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
+    nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
+    nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
+"}}}

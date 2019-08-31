@@ -146,7 +146,7 @@ set showmode
 " 在上下移动光标时，光标的上方或下方至少会保留显示的行数
 set scrolloff=7
 
-" set winwidth=79
+set winwidth=90
 
 " 命令行（在状态行下）的高度，默认为1，这里是2
 set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
@@ -228,16 +228,16 @@ function! TAB(size)
   execute "set softtabstop=".a:size
 endfunc
 
-autocmd FileType * :call TAB(2)                        " default Tabsize
+autocmd FileType * :call TAB(4)                        " default Tabsize
 autocmd FileType py,python :call TAB(4)                " python Tabsize
-autocmd FileType ruby :call TAB(2)                     " ruby Tabsize
-autocmd FileType vim :call TAB(2)                      " vimrc Tabsize
-autocmd FileType html :call TAB(2)                     " html Tabsize
-autocmd FileType javascript,typescript :call TAB(2)    " typescript javascript Tabsize
-autocmd FileType js,ts,cs,coffee,jsx :call TAB(2)      " typescript javascript coffeescript Tabsize
-autocmd FileType c,h :call TAB(2)                      " c Tabsize
-autocmd FileType cpp,hpp,cc,cxx :call TAB(2)           " cpp Tabsize
-autocmd FileType java :call TAB(2)                     " java Tabsize
+autocmd FileType ruby :call TAB(4)                     " ruby Tabsize
+autocmd FileType vim :call TAB(4)                      " vimrc Tabsize
+autocmd FileType html :call TAB(4)                     " html Tabsize
+autocmd FileType javascript,typescript :call TAB(4)    " typescript javascript Tabsize
+autocmd FileType js,ts,cs,coffee,jsx :call TAB(4)      " typescript javascript coffeescript Tabsize
+autocmd FileType c,h :call TAB(4)                      " c Tabsize
+autocmd FileType cpp,hpp,cc,cxx :call TAB(4)           " cpp Tabsize
+autocmd FileType java :call TAB(4)                     " java Tabsize
 
 " 使用F7切换是否使用空格代替tab(或tab代替空格)
 function! TabToggle()
@@ -457,7 +457,7 @@ cnoremap <C-e> <End>
 
 " 搜索相关
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
+" map <space> /
 " 进入搜索Use sane regexes"
 " nnoremap / /\v
 " vnoremap / /\v
@@ -592,7 +592,7 @@ nnoremap S :keeppatterns substitute/\s*\%#\s*/\r/e <bar> normal! ==<CR>
 
 " 具体编辑文件类型的一般设置，比如不要 tab 等
 autocmd FileType python :call TAB(4)
-autocmd FileType ruby,javascript,html,css,xml,go :call TAB(2)
+autocmd FileType ruby,javascript,html,css,xml,go :call TAB(4)
 autocmd FileType python,ruby,javascript,html,css,xml,go set expandtab ai
 autocmd BufRead,BufNewFile *.md,*.mkd,*.markdown set filetype=markdown.mkd
 autocmd BufRead,BufNewFile *.part set filetype=html
@@ -646,8 +646,8 @@ endfunc
 if has("autocmd")
   " Highlight TODO, FIXME, NOTE, etc.
   if v:version > 701
-    autocmd Syntax * call matchadd('Todo',  '\W\zs\(TODO\|FIXME\|CHANGED\|DONE\|XXX\|BUG\|HACK\|PENDING\)')
-    autocmd Syntax * call matchadd('Debug', '\W\zs\(NOTE\|INFO\|IDEA\|NOTICE\)')
+    autocmd Syntax * call matchadd('Todo',  '\W\zs\(TODO\|HANGED\|DONE\|XXX\|BUG\|HACK\)')
+    autocmd Syntax * call matchadd('Debug', '\W\zs\(NOTE\|FIXME\|CINFO\|IDEA\|NOTICE\|PENDING\)')
   endif
 endif
 
@@ -743,4 +743,26 @@ highlight SpellLocal term=underline cterm=underline
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 autocmd BufNewFile,BufReadPost *.TODO,TODO,*.todo,*.todolist,*.taskpaper,*.tasks,*.md set filetype=plaintasks
-set autoread
+
+set path=$PWD/**
+
+" airline {{{
+    " let g:airline#extensions#tabline#buffer_idx_mode = 1
+    " nmap <leader>1 :b 1<CR>
+    " nmap <leader>2 :b 2<CR>
+    " nmap <leader>3 :b 3<CR>
+    " nmap <leader>4 :b 4<CR>
+    " nmap <leader>5 :b 5<CR>
+    " nmap <leader>6 :b 6<CR>
+    " nmap <leader>7 :b 7<CR>
+    " nmap <leader>8 :b 8<CR>
+    " nmap <leader>9 :b 9<CR>
+"}}}
+
+
+if has('python3')
+    silent! python3 1
+endif
+
+nnoremap <F5> :echo system('python3 "' . expand('%') . '"')<cr>
+let g:NERDTreeNodeDelimiter = "\u00a0"
