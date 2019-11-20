@@ -54,7 +54,8 @@ Plug 'littlekey/validator.vim'
 " Group dependencies, vim-snippets depends on ultisnips
 " 代码片段快速插入 (snippets中,是代码片段资源,需要学习)
 " Snippets are separated from the engine. Add this if you want them:
-Plug 'Sirver/ultisnips' | Plug 'honza/vim-snippets'
+
+" Plug 'Sirver/ultisnips' | Plug 'honza/vim-snippets'
 
 " auto complete
 " 代码自动补全
