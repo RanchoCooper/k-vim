@@ -30,7 +30,7 @@ call plug#begin('~/.vim/bundle')
 " 移动光标到插件名上, 使用'#'快速跳转到每个插件的配置处
 
 " vim-session
-Plug 'xolox/vim-session'
+" Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 
 " indent  FIXME: 打开这个会出现一些自动缩进错误的问题
